@@ -1,4 +1,4 @@
-﻿using MelonLoader;
+using MelonLoader;
 using System;
 using System.Linq;
 using TMPro;
@@ -9,6 +9,8 @@ namespace SynthRidersPlus
     /// <summary>
     /// Melon main class
     /// </summary>
+    [MelonInfo(typeof(Mod), "SynthRidersPlus", "1.0.0", "hardcpp")]
+    [MelonGame("Kluge Interactive", "SynthRiders")]
     public class Mod : MelonMod
     {
         internal static string HarmonyID => "com.github.hardcpp.synthridersplus";
@@ -56,6 +58,7 @@ namespace SynthRidersPlus
 
             PatchUI();
         }
+
         public override void OnApplicationQuit()
         {
             CP_SDK.ChatPlexSDK.StopModules();
@@ -66,7 +69,7 @@ namespace SynthRidersPlus
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        public override void OnSceneLoaded(int buildIndex, string sceneName)
         {
             if (m_Initialized)
                 return;
@@ -75,13 +78,13 @@ namespace SynthRidersPlus
             {
                 CP_SDK.ChatPlexSDK.OnUnityReady();
 
-                CP_SDK.ChatPlexSDK.Logger.Debug("[SynthRidersPlus][Mod.OnSceneWasLoaded] Applying Harmony patches.");
+                CP_SDK.ChatPlexSDK.Logger.Debug("[SynthRidersPlus][Mod.OnSceneLoaded] Applying Harmony patches.");
 
                 /// Setup harmony
                 m_Harmony = new HarmonyLib.Harmony(HarmonyID);
                 m_Harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
 
-                CP_SDK.ChatPlexSDK.Logger.Debug("[SynthRidersPlus][Mod.OnSceneWasLoaded] Init helpers.");
+                CP_SDK.ChatPlexSDK.Logger.Debug("[SynthRidersPlus][Mod.OnSceneLoaded] Init helpers.");
                 SDK.Game.Logic.Init();
                 SDK.UI.ModMenuTracker.TouchInstance();
 
@@ -91,7 +94,7 @@ namespace SynthRidersPlus
             }
             catch (Exception p_Exception)
             {
-                CP_SDK.ChatPlexSDK.Logger.Error("[SynthRidersPlus][Mod.OnSceneWasLoaded] Error:");
+                CP_SDK.ChatPlexSDK.Logger.Error("[SynthRidersPlus][Mod.OnSceneLoaded] Error:");
                 CP_SDK.ChatPlexSDK.Logger.Error(p_Exception);
             }
 
